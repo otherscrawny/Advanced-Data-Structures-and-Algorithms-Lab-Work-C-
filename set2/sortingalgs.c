@@ -343,15 +343,11 @@ LinkedList *createLinkedList(void)
     return list;
 }
 
-// Insert values in such a way that the list remains sorted
 void insert(LinkedList *list, int data)
 {
     Node *newNode = createNode(data);
 
-    // If there is no node or new Node's value
-    // is smaller than the first value in the list,
 
-    // Insert new Node in the first place
     if (list->head == NULL || data < list->head->data)
     {
         newNode->nextNode = list->head;
@@ -360,11 +356,6 @@ void insert(LinkedList *list, int data)
     else
     {
         Node *current = list->head;
-
-        // If the next node is null or its value
-        // is greater than the new Node's value,
-
-        // Insert new Node in that place
         while (current->nextNode != NULL && current->nextNode->data < data)
         {
             current = current->nextNode;
@@ -375,7 +366,6 @@ void insert(LinkedList *list, int data)
     }
 }
 
-// Free all nodes in a linked list
 void freeLinkedList(LinkedList *list)
 {
     Node *current = list->head;
@@ -388,27 +378,20 @@ void freeLinkedList(LinkedList *list)
     free(list);
 }
 
-// This function returns the corresponding address
-// of given value in the address table
 int hashFunction(int num, int maximum)
 {
-    // Scale the value such that address is between 0 to 9
     int address = (int)(((double)num / maximum) * (SIZE - 1));
     return address;
 }
 
-// This function sorts the given array
-// using Address Calculation Sorting using Hashing
 void addressCalculationSort(int arr[], int n)
 {
-    // Declare an array of Linked List pointers of given SIZE
     LinkedList *listOfLinkedLists[SIZE];
     for (int i = 0; i < SIZE; ++i)
     {
         listOfLinkedLists[i] = createLinkedList();
     }
 
-    // Calculate maximum value in the array
     int maximum = arr[0];
     for (int i = 1; i < n; ++i)
     {
@@ -418,17 +401,12 @@ void addressCalculationSort(int arr[], int n)
         }
     }
 
-    // Find the address of each value
-    // in the address table
-    // and insert it in that list
     for (int i = 0; i < n; ++i)
     {
         int address = hashFunction(arr[i], maximum);
         insert(listOfLinkedLists[address], arr[i]);
     }
 
-    // Print the address table
-    // after all the values have been inserted
     for (int i = 0; i < SIZE; ++i)
     {
         Node *current = listOfLinkedLists[i]->head;
@@ -443,7 +421,6 @@ void addressCalculationSort(int arr[], int n)
         printf("\n");
     }
 
-    // Assign the sorted values back into the input array
     int index = 0;
     for (int i = 0; i < SIZE; ++i)
     {
@@ -457,7 +434,6 @@ void addressCalculationSort(int arr[], int n)
         }
     }
 
-    // Free all the linked lists
     for (int i = 0; i < SIZE; ++i)
     {
         freeLinkedList(listOfLinkedLists[i]);
