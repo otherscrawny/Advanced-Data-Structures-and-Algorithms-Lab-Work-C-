@@ -124,10 +124,7 @@ void heapify(int arr[], int n, int i)
 
     if (largest != i)
     {
-        int temp = arr[i];
-        arr[i] = arr[largest];
-        arr[largest] = temp;
-
+        SWAP(int,arr[i],arr[largest]);
         heapify(arr, n, largest);
     }
 }
@@ -139,10 +136,7 @@ void heapSort(int arr[], int n)
 
     for (int i = n - 1; i > 0; i--)
     {
-        int temp = arr[0];
-        arr[0] = arr[i];
-        arr[i] = temp;
-
+        SWAP(int,arr[0],arr[i]);
         heapify(arr, i, 0);
     }
 }
@@ -307,10 +301,7 @@ void shellSort(int arr[], int n)
                     break;
                 else
                 {
-                    int temp;
-                    temp = arr[k + gap];
-                    arr[k + gap] = arr[k];
-                    arr[k] = temp;
+                    SWAP(int,arr[k+gap],arr[k]
                 }
             }
         }
