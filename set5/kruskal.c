@@ -1,12 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// qsort comparator: sort edges by weight (ascending)
 int comparator(const void *p1, const void *p2)
 {
     const int *a = (const int *)p1;
     const int *b = (const int *)p2;
-    return (a[2] > b[2]) - (a[2] < b[2]); // overflow-safe
+    return (a[2] > b[2]) - (a[2] < b[2]);
 }
 
 void makeSet(int parent[], int rank[], int V)
@@ -18,7 +17,6 @@ void makeSet(int parent[], int rank[], int V)
     }
 }
 
-// Find with path compression
 int findParent(int parent[], int x)
 {
     if (parent[x] != x)
@@ -26,7 +24,6 @@ int findParent(int parent[], int x)
     return parent[x];
 }
 
-// Union by rank; u and v must be roots
 void unionSet(int u, int v, int parent[], int rank[])
 {
     if (rank[u] < rank[v])
@@ -44,9 +41,6 @@ void unionSet(int u, int v, int parent[], int rank[])
     }
 }
 
-// V = number of vertices, E = number of edges
-// edge[i] = {u, v, weight}
-// Returns the MST cost, or -1 if the graph is disconnected
 int kruskalAlgo(int V, int E, int edge[E][3])
 {
     qsort(edge, E, sizeof(edge[0]), comparator);
@@ -65,7 +59,7 @@ int kruskalAlgo(int V, int E, int edge[E][3])
         int wt = edge[i][2];
 
         if (v1 != v2)
-        { // different components -> no cycle
+        {
             unionSet(v1, v2, parent, rank);
             minCost += wt;
             used++;
@@ -86,7 +80,6 @@ int main(void)
     }
 
     int V;
-    // Read the number of vertices from the first line
     if (fscanf(file, "%d", &V) != 1)
     {
         printf("Error reading vertex count.\n");
@@ -94,7 +87,6 @@ int main(void)
         return 1;
     }
 
-    // Read the n x n adjacency matrix
     int adj[V][V];
     for (int i = 0; i < V; i++)
     {
@@ -105,27 +97,24 @@ int main(void)
     }
     fclose(file);
 
-    // Maximum possible edges for an undirected graph is V*(V-1)/2
     int maxEdges = V * (V - 1) / 2;
     int edge[maxEdges][3];
     int E = 0;
 
-    // Extract edges and weights from the upper triangle of the adjacency matrix
     for (int i = 0; i < V; i++)
     {
         for (int j = i + 1; j < V; j++)
         {
             if (adj[i][j] != 0)
-            {                           // Assuming 0 means no edge
-                edge[E][0] = i;         // Source
-                edge[E][1] = j;         // Destination
-                edge[E][2] = adj[i][j]; // Weight
+            {
+                edge[E][0] = i;
+                edge[E][1] = j;
+                edge[E][2] = adj[i][j];
                 E++;
             }
         }
     }
 
-    // Call your Kruskal algorithm function
     int cost = kruskalAlgo(V, E, edge);
     if (cost < 0)
         printf("Graph is disconnected; no spanning tree exists.\n");

@@ -2,28 +2,24 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-// Structure for Adjacency List Node
 struct Node
 {
     int dest;
     struct Node *next;
 };
 
-// Structure for Graph
 struct Graph
 {
     int V;
     struct Node **adj;
 };
 
-// Structure for Edge (used in BCC edge stack)
 struct Edge
 {
     int u;
     int v;
 };
 
-// Create a graph with V vertices
 struct Graph *createGraph(int V)
 {
     struct Graph *graph = (struct Graph *)malloc(sizeof(struct Graph));
@@ -34,7 +30,6 @@ struct Graph *createGraph(int V)
     return graph;
 }
 
-// Add an edge to the graph
 void addEdge(struct Graph *graph, int src, int dest)
 {
     struct Node *newNode = (struct Node *)malloc(sizeof(struct Node));
@@ -43,7 +38,6 @@ void addEdge(struct Graph *graph, int src, int dest)
     graph->adj[src] = newNode;
 }
 
-// --- 1. STRONGLY CONNECTED COMPONENTS (Tarjan's Algorithm) ---
 void SCCUtil(struct Graph *graph, int u, int disc[], int low[], int st[], int *top, bool stackMember[], int *timer)
 {
     disc[u] = low[u] = ++(*timer);
@@ -115,7 +109,6 @@ void findSCCs(struct Graph *graph)
     free(st);
 }
 
-// --- 2, 3, 4. ARTICULATION POINTS, BRIDGES, AND BICONNECTED COMPONENTS ---
 void bridgeBCCUtil(struct Graph *graph, int u, int p, int disc[], int low[], bool ap[],
                    struct Edge edgeStack[], int *edgeTop, int *timer)
 {
@@ -237,24 +230,19 @@ void findBCCsAndBridges(struct Graph *graph)
     free(edgeStack);
 }
 
-// --- DRIVER CODE ---
 int main()
 {
     int V = 5;
     struct Graph *graph = createGraph(V);
 
-    // Build sample directed graph connections
     addEdge(graph, 0, 1);
     addEdge(graph, 1, 2);
     addEdge(graph, 2, 0);
     addEdge(graph, 1, 3);
     addEdge(graph, 3, 4);
 
-    // 1. Find Strongly Connected Components
     findSCCs(graph);
 
-    // 2, 3, 4. Find Articulation Points, Bridges, and BCCs
-    // (Evaluated under undirected connectivity semantics)
     findBCCsAndBridges(graph);
 
     return 0;

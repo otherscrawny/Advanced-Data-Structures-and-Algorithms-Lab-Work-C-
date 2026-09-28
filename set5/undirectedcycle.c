@@ -4,7 +4,6 @@
 
 #define MAX_NODES 100
 
-// Graph representation using adjacency list
 struct Node
 {
     int dest;
@@ -17,7 +16,6 @@ struct Graph
     struct Node *adjLists[MAX_NODES];
 };
 
-// Function to create a graph
 struct Graph *createGraph(int vertices)
 {
     struct Graph *graph = (struct Graph *)malloc(sizeof(struct Graph));
@@ -40,7 +38,6 @@ void addEdge(struct Graph *graph, int src, int dest)
     graph->adjLists[dest] = newNode;
 }
 
-// 1. Find Smallest Cycle (Girth) using BFS
 int findSmallestCycle(struct Graph *graph)
 {
     int minCycle = INT_MAX;
@@ -77,7 +74,6 @@ int findSmallestCycle(struct Graph *graph)
                 }
                 else if (parent[u] != v)
                 {
-                    // Back edge found, calculate cycle length
                     int cycleLen = dist[u] + dist[v] + 1;
                     if (cycleLen < minCycle)
                     {
@@ -91,7 +87,6 @@ int findSmallestCycle(struct Graph *graph)
     return (minCycle == INT_MAX) ? -1 : minCycle;
 }
 
-// 2. Find Largest Cycle using DFS Backtracking
 void dfsLargest(struct Graph *graph, int curr, int start, int visited[], int depth, int *maxCycle)
 {
     visited[curr] = 1;

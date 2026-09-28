@@ -7,16 +7,13 @@ int n, e, m;
 int adj[MAX_VERTICES][MAX_VERTICES];
 int current_clique[MAX_VERTICES];
 
-// Backtracking function to search for a clique of size m
 bool find_clique(int start_vertex, int current_size)
 {
-    // Base case: if we have found a clique of size m
     if (current_size == m)
     {
         return true;
     }
 
-    // Pruning: if remaining vertices are not enough to reach size m
     if (n - start_vertex < m - current_size)
     {
         return false;
@@ -24,7 +21,6 @@ bool find_clique(int start_vertex, int current_size)
 
     for (int i = start_vertex; i < n; i++)
     {
-        // Check if vertex i is connected to all vertices currently in the clique
         bool connected_to_all = true;
         for (int j = 0; j < current_size; j++)
         {
@@ -35,7 +31,6 @@ bool find_clique(int start_vertex, int current_size)
             }
         }
 
-        // If it connects to all existing clique members, add it and recurse
         if (connected_to_all)
         {
             current_clique[current_size] = i;
@@ -50,11 +45,9 @@ bool find_clique(int start_vertex, int current_size)
 
 int main()
 {
-    // --- STATIC INPUT CONFIGURATION ---
-    n = 4; // Number of vertices (0 to 3)
-    m = 3; // Target clique size
+    n = 4;
+    m = 3;
 
-    // Initialize adjacency matrix to 0
     for (int i = 0; i < n; i++)
     {
         for (int j = 0; j < n; j++)
@@ -70,22 +63,19 @@ int main()
         {2, 3}};
     e = sizeof(edges) / sizeof(edges[0]);
 
-    // Populate the adjacency matrix from the static edge list
     for (int i = 0; i < e; i++)
     {
         int u = edges[i][0];
         int v = edges[i][1];
         adj[u][v] = 1;
-        adj[v][u] = 1; // Undirected graph
+        adj[v][u] = 1;
     }
-    // ------------------------------------
 
     printf("--- Static Graph Analysis ---\n");
     printf("Vertices (n): %d\n", n);
     printf("Edges (e): %d\n", e);
     printf("Target Clique Size (m): %d\n\n", m);
 
-    // Search for the clique
     bool exists = find_clique(0, 0);
 
     if (exists)

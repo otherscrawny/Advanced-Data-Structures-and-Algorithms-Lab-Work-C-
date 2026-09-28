@@ -2,17 +2,16 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#define M 4 // Maximum degree of the B-tree
+#define M 4
 
 struct BTreeNode
 {
-    int num_keys;                  // Number of keys currently in the node
-    int keys[M - 1];               // Array of keys
-    struct BTreeNode *children[M]; // Array of child pointers
-    bool is_leaf;                  // True if node is a leaf
+    int num_keys;
+    int keys[M - 1];
+    struct BTreeNode *children[M];
+    bool is_leaf;
 };
 
-// Function to create a new node
 struct BTreeNode *createNode(bool is_leaf)
 {
     struct BTreeNode *newNode = (struct BTreeNode *)malloc(sizeof(struct BTreeNode));
@@ -30,7 +29,6 @@ struct BTreeNode *createNode(bool is_leaf)
     return newNode;
 }
 
-// Function to split a full child node
 void splitChild(struct BTreeNode *parent, int index)
 {
     struct BTreeNode *child = parent->children[index];
@@ -38,7 +36,6 @@ void splitChild(struct BTreeNode *parent, int index)
 
     newNode->num_keys = M / 2 - 1;
 
-    // Move keys and children to the new node
     for (int i = 0; i < M / 2 - 1; i++)
     {
         newNode->keys[i] = child->keys[i + M / 2];
@@ -54,7 +51,6 @@ void splitChild(struct BTreeNode *parent, int index)
 
     child->num_keys = M / 2 - 1;
 
-    // Shift parent's children to make space for the new node
     for (int i = parent->num_keys; i > index; i--)
     {
         parent->children[i + 1] = parent->children[i];
@@ -62,7 +58,6 @@ void splitChild(struct BTreeNode *parent, int index)
 
     parent->children[index + 1] = newNode;
 
-    // Shift parent's keys to insert the middle key from the child
     for (int i = parent->num_keys - 1; i >= index; i--)
     {
         parent->keys[i + 1] = parent->keys[i];
@@ -72,14 +67,12 @@ void splitChild(struct BTreeNode *parent, int index)
     parent->num_keys++;
 }
 
-// Function to insert a key into a non-full node
 void insertNonFull(struct BTreeNode *node, int key)
 {
     int i = node->num_keys - 1;
 
     if (node->is_leaf)
     {
-        // Insert key into the sorted order
         while (i >= 0 && node->keys[i] > key)
         {
             node->keys[i + 1] = node->keys[i];
@@ -90,7 +83,6 @@ void insertNonFull(struct BTreeNode *node, int key)
     }
     else
     {
-        // Find the child to insert the key
         while (i >= 0 && node->keys[i] > key)
         {
             i--;
@@ -99,10 +91,8 @@ void insertNonFull(struct BTreeNode *node, int key)
 
         if (node->children[i]->num_keys == M - 1)
         {
-            // Split child if it's full
             splitChild(node, i);
 
-            // Determine which of the two children is the new one
             if (node->keys[i] < key)
             {
                 i++;
@@ -112,14 +102,12 @@ void insertNonFull(struct BTreeNode *node, int key)
     }
 }
 
-// Function to insert a key into the B-tree
 void insert(struct BTreeNode **root, int key)
 {
     struct BTreeNode *node = *root;
 
     if (node == NULL)
     {
-        // Create a new root node
         *root = createNode(true);
         (*root)->keys[0] = key;
         (*root)->num_keys = 1;
@@ -128,7 +116,6 @@ void insert(struct BTreeNode **root, int key)
     {
         if (node->num_keys == M - 1)
         {
-            // Split the root if it's full
             struct BTreeNode *new_root = createNode(false);
             new_root->children[0] = node;
             splitChild(new_root, 0);
@@ -138,7 +125,6 @@ void insert(struct BTreeNode **root, int key)
     }
 }
 
-// Function to traverse and print the B-tree in-order
 void traverse(struct BTreeNode *root)
 {
     if (root != NULL)

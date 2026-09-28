@@ -4,7 +4,6 @@
 
 #define N 4
 
-// Function to calculate the number of misplaced tiles (heuristic h(x))
 int calculateCost(int initial[N][N], int goal[N][N])
 {
     int count = 0;
@@ -21,7 +20,6 @@ int calculateCost(int initial[N][N], int goal[N][N])
     return count;
 }
 
-// Function to print the board matrix
 void printMatrix(int mat[N][N])
 {
     for (int i = 0; i < N; i++)
@@ -35,7 +33,6 @@ void printMatrix(int mat[N][N])
     printf("\n");
 }
 
-// Check if the board matches the goal
 int isGoal(int mat[N][N], int goal[N][N])
 {
     return memcmp(mat, goal, sizeof(int) * N * N) == 0;
@@ -47,12 +44,10 @@ void solvePuzzle(int initial[N][N], int goal[N][N])
 
     int level = 0;
 
-    // Simple iterative Branch and Bound simulation loop
     while (!isGoal(current, goal))
     {
         int x = -1, y = -1;
 
-        // Find empty tile (0) coordinates
         for (int i = 0; i < N; i++)
         {
             for (int j = 0; j < N; j++)
@@ -83,12 +78,11 @@ void solvePuzzle(int initial[N][N], int goal[N][N])
                 int temp[N][N];
                 memcpy(temp, current, sizeof(int) * N * N);
 
-                // Swap empty space with neighbor
                 temp[x][y] = temp[newX][newY];
                 temp[newX][newY] = 0;
 
                 int h = calculateCost(temp, goal);
-                int cost = (level + 1) + h; // C(x) = g(x) + h(x)
+                int cost = (level + 1) + h;
 
                 if (cost < minCost)
                 {
@@ -112,7 +106,7 @@ void solvePuzzle(int initial[N][N], int goal[N][N])
         printMatrix(current);
 
         if (level > 20)
-        { // Safety break for demonstration
+        {
             printf("Max search depth reached.\n");
             break;
         }
@@ -161,7 +155,6 @@ int main()
     printf("Goal State:\n");
     printMatrix(goal);
 
-    // Call the solver function
     solvePuzzle(initial, goal);
 
     return 0;

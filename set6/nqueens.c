@@ -70,7 +70,6 @@ bool solveNQ()
     return true;
 }
 
-// driver program to test above function
 int main()
 {
     solveNQ();

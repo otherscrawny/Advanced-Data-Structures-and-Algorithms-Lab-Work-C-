@@ -20,10 +20,9 @@ typedef struct
 {
     int V;
     Node *head[MAX_V];
-    Node *tail[MAX_V]; // tail pointer keeps insertion order
+    Node *tail[MAX_V];
 } Graph;
 
-// DFS state
 static Color color[MAX_V];
 static int disc[MAX_V], fin[MAX_V];
 static int timer_;
@@ -77,15 +76,14 @@ void dfsVisit(Graph *g, int u)
         }
         else if (color[v] == GRAY)
         {
-            // v is an ancestor still on the recursion stack (includes self-loops)
             printf("Back edge     : %d -> %d\n", u, v);
         }
         else
-        { // BLACK: v is already finished
+        {
             if (disc[u] < disc[v])
-                printf("Forward edge  : %d -> %d\n", u, v); // v is a descendant of u
+                printf("Forward edge  : %d -> %d\n", u, v);
             else
-                printf("Cross edge    : %d -> %d\n", u, v); // v is in another subtree/tree
+                printf("Cross edge    : %d -> %d\n", u, v);
         }
     }
 
@@ -102,7 +100,6 @@ void dfs(Graph *g)
     }
     timer_ = 0;
 
-    // Loop over all vertices so disconnected parts (DFS forest) are covered
     for (int i = 0; i < g->V; i++)
     {
         if (color[i] == WHITE)

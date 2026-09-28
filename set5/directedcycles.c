@@ -4,21 +4,18 @@
 
 #define MAX_VERTICES 100
 
-// Adjacency list node structure
 struct Node
 {
     int dest;
     struct Node *next;
 };
 
-// Graph structure
 struct Graph
 {
     int numVertices;
     struct Node *adjLists[MAX_VERTICES];
 };
 
-// Create a new adjacency list node
 struct Node *createNode(int dest)
 {
     struct Node *newNode = (struct Node *)malloc(sizeof(struct Node));
@@ -27,7 +24,6 @@ struct Node *createNode(int dest)
     return newNode;
 }
 
-// Add a directed edge to the graph
 void addEdge(struct Graph *graph, int src, int dest)
 {
     struct Node *newNode = createNode(dest);
@@ -35,7 +31,6 @@ void addEdge(struct Graph *graph, int src, int dest)
     graph->adjLists[src] = newNode;
 }
 
-// Function to find the smallest cycle using BFS
 int findSmallestCycle(struct Graph *graph)
 {
     int minCycle = INT_MAX;
@@ -51,13 +46,12 @@ int findSmallestCycle(struct Graph *graph)
         int queue[MAX_VERTICES];
         int front = 0, rear = 0;
 
-        // Initialize BFS with immediate neighbors of 'start'
         struct Node *temp = graph->adjLists[start];
         while (temp != NULL)
         {
             int v = temp->dest;
             if (v == start)
-                return 1; // Self-loop
+                return 1;
             queue[rear++] = v;
             dist[v] = 1;
             temp = temp->next;
@@ -96,7 +90,6 @@ int findSmallestCycle(struct Graph *graph)
     return (minCycle == INT_MAX) ? -1 : minCycle;
 }
 
-// Helper DFS function for finding the largest cycle
 void dfsLargest(struct Graph *graph, int curr, int start, int currentLength, int *maxCycle, int *visitedInPath)
 {
     visitedInPath[curr] = 1;
@@ -119,10 +112,9 @@ void dfsLargest(struct Graph *graph, int curr, int start, int currentLength, int
         temp = temp->next;
     }
 
-    visitedInPath[curr] = 0; // Backtrack
+    visitedInPath[curr] = 0;
 }
 
-// Function to find the largest cycle using DFS backtracking
 int findLargestCycle(struct Graph *graph)
 {
     int maxCycle = -1;

@@ -8,8 +8,6 @@ int findminDistance(int dist[], int included[])
 {
     int min = INT_MAX, min_index;
 
-    // Traverse all vertices to find the vertex with the
-    // minimum distance value
     for (int v = 0; v < V; v++)
     {
         if (included[v] == 0 && dist[v] <= min)
@@ -21,7 +19,6 @@ int findminDistance(int dist[], int included[])
     return min_index;
 }
 
-// Function to print the constructed distance array
 void printSolution(int dist[])
 {
     printf("Vertex \t Distance from Source\n");
@@ -46,7 +43,6 @@ void DijkstrasAlgo(int graph[V][V], int src)
 
     dist[src] = 0;
 
-    // Find the shortest path for all vertices
     for (int count = 0; count < V - 1; count++)
     {
 
@@ -64,7 +60,6 @@ void DijkstrasAlgo(int graph[V][V], int src)
         }
     }
 
-    // Print the constructed distance array
     printSolution(dist);
 }
 

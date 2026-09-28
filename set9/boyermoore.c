@@ -49,17 +49,14 @@ void search(char *txt, char *pat)
     }
 }
 
-/* Driver program to test above function */
 int main()
 {
     char txt[1000];
     char pat[1000];
 
     printf("Enter the text string: ");
-    // Read a line of text, handling spaces
     if (fgets(txt, sizeof(txt), stdin) != NULL)
     {
-        // Remove trailing newline character if present
         txt[strcspn(txt, "\n")] = 0;
     }
 

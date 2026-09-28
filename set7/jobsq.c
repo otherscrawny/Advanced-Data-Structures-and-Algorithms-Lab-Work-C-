@@ -1,27 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// Structure to pair profit and deadline together
 typedef struct
 {
     int profit;
     int deadline;
 } Job;
 
-// Comparison function to sort jobs in descending order of profit
 int compare(const void *a, const void *b)
 {
     Job *j1 = (Job *)a;
     Job *j2 = (Job *)b;
-    return (j2->profit - j1->profit); // Descending order
+    return (j2->profit - j1->profit);
 }
 
-// Function now returns just the total profit (int)
 int jobSequencing(int deadline[], int profit[], int n)
 {
     int totProfit = 0;
 
-    // Pair the profit and deadline of all the jobs together
     Job jobs[n];
     for (int i = 0; i < n; i++)
     {
@@ -29,10 +25,8 @@ int jobSequencing(int deadline[], int profit[], int n)
         jobs[i].deadline = deadline[i];
     }
 
-    // Sort the jobs based on profit in decreasing order
     qsort(jobs, n, sizeof(Job), compare);
 
-    // Slot array initialized to 0 (meaning empty)
     int slot[n];
     for (int i = 0; i < n; i++)
     {
@@ -44,7 +38,7 @@ int jobSequencing(int deadline[], int profit[], int n)
         int limit = (jobs[i].deadline < n) ? jobs[i].deadline : n;
         for (int j = limit - 1; j >= 0; j--)
         {
-            // If slot is empty
+
             if (slot[j] == 0)
             {
                 slot[j] = 1;

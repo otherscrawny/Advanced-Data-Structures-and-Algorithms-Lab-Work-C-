@@ -334,15 +334,10 @@ LinkedList *createLinkedList(void)
     return list;
 }
 
-// Insert values in such a way that the list remains sorted
 void insert(LinkedList *list, int data)
 {
     Node *newNode = createNode(data);
 
-    // If there is no node or new Node's value
-    // is smaller than the first value in the list,
-
-    // Insert new Node in the first place
     if (list->head == NULL || data < list->head->data)
     {
         newNode->nextNode = list->head;
@@ -352,10 +347,6 @@ void insert(LinkedList *list, int data)
     {
         Node *current = list->head;
 
-        // If the next node is null or its value
-        // is greater than the new Node's value,
-
-        // Insert new Node in that place
         while (current->nextNode != NULL && current->nextNode->data < data)
         {
             current = current->nextNode;
@@ -366,7 +357,6 @@ void insert(LinkedList *list, int data)
     }
 }
 
-// Free all nodes in a linked list
 void freeLinkedList(LinkedList *list)
 {
     Node *current = list->head;
@@ -379,27 +369,20 @@ void freeLinkedList(LinkedList *list)
     free(list);
 }
 
-// This function returns the corresponding address
-// of given value in the address table
 int hashFunction(int num, int maximum)
 {
-    // Scale the value such that address is between 0 to 9
     int address = (int)(((double)num / maximum) * (SIZE - 1));
     return address;
 }
 
-// This function sorts the given array
-// using Address Calculation Sorting using Hashing
 void addressCalculationSort(int arr[], int n)
 {
-    // Declare an array of Linked List pointers of given SIZE
     LinkedList *listOfLinkedLists[SIZE];
     for (int i = 0; i < SIZE; ++i)
     {
         listOfLinkedLists[i] = createLinkedList();
     }
 
-    // Calculate maximum value in the array
     int maximum = arr[0];
     for (int i = 1; i < n; ++i)
     {
@@ -409,17 +392,12 @@ void addressCalculationSort(int arr[], int n)
         }
     }
 
-    // Find the address of each value
-    // in the address table
-    // and insert it in that list
     for (int i = 0; i < n; ++i)
     {
         int address = hashFunction(arr[i], maximum);
         insert(listOfLinkedLists[address], arr[i]);
     }
 
-    // Print the address table
-    // after all the values have been inserted
     for (int i = 0; i < SIZE; ++i)
     {
         Node *current = listOfLinkedLists[i]->head;
@@ -434,7 +412,6 @@ void addressCalculationSort(int arr[], int n)
         printf("\n");
     }
 
-    // Assign the sorted values back into the input array
     int index = 0;
     for (int i = 0; i < SIZE; ++i)
     {
@@ -448,7 +425,6 @@ void addressCalculationSort(int arr[], int n)
         }
     }
 
-    // Free all the linked lists
     for (int i = 0; i < SIZE; ++i)
     {
         freeLinkedList(listOfLinkedLists[i]);
@@ -462,16 +438,13 @@ void merge(int arr[], int l, int m, int r)
     int n1 = m - l + 1;
     int n2 = r - m;
 
-    // Create temp arrays
     int L[n1], R[n2];
 
-    // Copy data to temp arrays L[] and R[]
     for (i = 0; i < n1; i++)
         L[i] = arr[l + i];
     for (j = 0; j < n2; j++)
         R[j] = arr[m + 1 + j];
 
-    // Merge the temp arrays back into arr[l..r
     i = 0;
     j = 0;
     k = l;
@@ -490,8 +463,6 @@ void merge(int arr[], int l, int m, int r)
         k++;
     }
 
-    // Copy the remaining elements of L[],
-    // if there are any
     while (i < n1)
     {
         arr[k] = L[i];
@@ -499,8 +470,6 @@ void merge(int arr[], int l, int m, int r)
         k++;
     }
 
-    // Copy the remaining elements of R[],
-    // if there are any
     while (j < n2)
     {
         arr[k] = R[j];
@@ -509,8 +478,6 @@ void merge(int arr[], int l, int m, int r)
     }
 }
 
-// l is for left index and r is right index of the
-// sub-array of arr to be sorted
 void mergeSort(int arr[], int l, int r)
 {
 
@@ -518,7 +485,6 @@ void mergeSort(int arr[], int l, int r)
     {
         int m = l + (r - l) / 2;
 
-        // Sort first and second halves
         mergeSort(arr, l, m);
         mergeSort(arr, m + 1, r);
 
@@ -537,7 +503,6 @@ int main()
         return 1;
     }
 
-    // First, count the number of elements
     int n = 0;
     int temp;
     while (fscanf(file, "%d", &temp) == 1)
@@ -552,14 +517,11 @@ int main()
         return 1;
     }
 
-    // Reset file pointer to beginning
     rewind(file);
 
-    // Allocate memory for arrays
     int *arr = (int *)malloc(n * sizeof(int));
     int *test_arr = (int *)malloc(n * sizeof(int));
 
-    // Read array elements from file
     for (int i = 0; i < n; i++)
     {
         fscanf(file, "%d", &arr[i]);

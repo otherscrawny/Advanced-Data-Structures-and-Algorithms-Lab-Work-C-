@@ -2,11 +2,10 @@
 #include <string.h>
 #include <stdlib.h>
 
-// Function to compute the LPS (Longest Prefix Suffix) array
 void computeLPSArray(char *pat, int M, int *lps)
 {
-    int len = 0; // Length of the previous longest prefix suffix
-    lps[0] = 0;  // lps[0] is always 0
+    int len = 0;
+    lps[0] = 0;
     int i = 1;
 
     while (i < M)
@@ -21,7 +20,7 @@ void computeLPSArray(char *pat, int M, int *lps)
         {
             if (len != 0)
             {
-                len = lps[len - 1]; // Fall back to previous prefix
+                len = lps[len - 1];
             }
             else
             {
@@ -32,13 +31,11 @@ void computeLPSArray(char *pat, int M, int *lps)
     }
 }
 
-// Function to implement KMP search algorithm
 void KMPSearch(char *pat, char *txt)
 {
     int M = strlen(pat);
     int N = strlen(txt);
 
-    // Create lps[] to hold the longest prefix suffix values for the pattern
     int *lps = (int *)malloc(M * sizeof(int));
     if (lps == NULL)
     {
@@ -48,8 +45,8 @@ void KMPSearch(char *pat, char *txt)
 
     computeLPSArray(pat, M, lps);
 
-    int i = 0; // Index for txt[]
-    int j = 0; // Index for pat[]
+    int i = 0;
+    int j = 0;
 
     while (i < N)
     {
@@ -66,7 +63,6 @@ void KMPSearch(char *pat, char *txt)
         }
         else if (i < N && pat[j] != txt[i])
         {
-            // Mismatch after j matches
             if (j != 0)
                 j = lps[j - 1];
             else
@@ -74,7 +70,7 @@ void KMPSearch(char *pat, char *txt)
         }
     }
 
-    free(lps); // Free dynamically allocated memory
+    free(lps);
 }
 
 int main()
@@ -83,10 +79,8 @@ int main()
     char pat[1000];
 
     printf("Enter the text string: ");
-    // Read a line of text, handling spaces
     if (fgets(txt, sizeof(txt), stdin) != NULL)
     {
-        // Remove trailing newline character if present
         txt[strcspn(txt, "\n")] = 0;
     }
 

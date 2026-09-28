@@ -1,14 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// Structure for Adjacency List Node
 struct Node
 {
     int dest;
     struct Node *next;
 };
 
-// Structure for Queue implementation
 struct Queue
 {
     int *items;
@@ -17,7 +15,6 @@ struct Queue
     int capacity;
 };
 
-// Queue helper functions
 struct Queue *createQueue(int capacity)
 {
     struct Queue *q = (struct Queue *)malloc(sizeof(struct Queue));
@@ -49,7 +46,6 @@ void freeQueue(struct Queue *q)
     free(q);
 }
 
-// Topological Sort using Kahn's Algorithm
 int *topoSort(struct Node *adj[], int n, int *returnSize)
 {
     int *indegree = (int *)calloc(n, sizeof(int));
@@ -57,7 +53,6 @@ int *topoSort(struct Node *adj[], int n, int *returnSize)
     int *list = (int *)malloc(n * sizeof(int));
     int listIndex = 0;
 
-    // Compute indegrees
     for (int i = 0; i < n; i++)
     {
         struct Node *temp = adj[i];
@@ -68,7 +63,6 @@ int *topoSort(struct Node *adj[], int n, int *returnSize)
         }
     }
 
-    // Add all nodes with indegree 0 into the queue
     for (int i = 0; i < n; i++)
     {
         if (indegree[i] == 0)
@@ -77,7 +71,6 @@ int *topoSort(struct Node *adj[], int n, int *returnSize)
         }
     }
 
-    // Kahn’s Algorithm (BFS)
     while (!isEmpty(q))
     {
         int top = dequeue(q);
@@ -113,8 +106,6 @@ void addEdge(struct Node *adj[], int u, int v)
 int main()
 {
     int n = 6;
-
-    // Allocate adjacency list array
     struct Node **adj = (struct Node **)malloc(n * sizeof(struct Node *));
     for (int i = 0; i < n; i++)
     {
@@ -131,14 +122,12 @@ int main()
     int returnSize = 0;
     int *res = topoSort(adj, n, &returnSize);
 
-    // Print result
-    for (int i = 0; i < returnSize; i++)
+        for (int i = 0; i < returnSize; i++)
     {
         printf("%d ", res[i]);
     }
     printf("\n");
 
-    // Clean up graph memory
     for (int i = 0; i < n; i++)
     {
         struct Node *temp = adj[i];
