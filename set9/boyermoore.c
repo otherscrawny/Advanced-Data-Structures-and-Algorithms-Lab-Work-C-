@@ -1,0 +1,73 @@
+
+#include <limits.h>
+#include <stdio.h>
+#include <string.h>
+
+#define NO_OF_CHARS 256
+
+int max(int a, int b) { return (a > b) ? a : b; }
+
+void badCharHeuristic(char *str, int size,
+                      int badchar[NO_OF_CHARS])
+{
+    int i;
+
+    for (i = 0; i < NO_OF_CHARS; i++)
+        badchar[i] = -1;
+
+    for (i = 0; i < size; i++)
+        badchar[(int)str[i]] = i;
+}
+
+void search(char *txt, char *pat)
+{
+    int m = strlen(pat);
+    int n = strlen(txt);
+
+    int badchar[NO_OF_CHARS];
+
+    badCharHeuristic(pat, m, badchar);
+
+    int s = 0;
+    while (s <= (n - m))
+    {
+        int j = m - 1;
+
+        while (j >= 0 && pat[j] == txt[s + j])
+            j--;
+
+        if (j < 0)
+        {
+            printf("\npattern occurs at shift = %d", s);
+
+            s += (s + m < n) ? m - badchar[txt[s + m]] : 1;
+        }
+
+        else
+
+            s += max(1, j - badchar[txt[s + j]]);
+    }
+}
+
+/* Driver program to test above function */
+int main()
+{
+    char txt[1000];
+    char pat[1000];
+
+    printf("Enter the text string: ");
+    // Read a line of text, handling spaces
+    if (fgets(txt, sizeof(txt), stdin) != NULL)
+    {
+        // Remove trailing newline character if present
+        txt[strcspn(txt, "\n")] = 0;
+    }
+
+    printf("Enter the pattern to search: ");
+    if (fgets(pat, sizeof(pat), stdin) != NULL)
+    {
+        pat[strcspn(pat, "\n")] = 0;
+    }
+    search(txt, pat);
+    return 0;
+}
